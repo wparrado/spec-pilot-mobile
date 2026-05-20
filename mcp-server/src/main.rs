@@ -100,7 +100,8 @@ struct ScaffoldPhaseInput {
     plan_content: String,
     /// Domain entity singular (from constitution)
     domain_entity: String,
-    /// Domain entity plural (from constitution)
+    /// Domain entity plural (from constitution) — kept for API compatibility
+    #[allow(dead_code)]
     domain_entity_plural: String,
     /// Language (from constitution)
     language: String,
@@ -976,7 +977,6 @@ analyze_result received ({} chars):\n> {}",
 
     let entity = &input.domain_entity;
     let entity_plural = &input.domain_entity_plural;
-    let entity_lower = entity.to_lowercase();
     let entity_plural_lower = entity_plural.to_lowercase();
 
     format!(
@@ -1102,8 +1102,6 @@ previous_phase_output received ({} chars):\n> {}",
 
     let entity = &input.domain_entity;
     let entity_lower = entity.to_lowercase();
-    let entity_plural = &input.domain_entity_plural;
-    let entity_plural_lower = entity_plural.to_lowercase();
     let tasks_ref = preview_chars(&input.tasks_content, 500);
     let plan_ref = preview_chars(&input.plan_content, 400);
 
