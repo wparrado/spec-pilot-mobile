@@ -1,0 +1,6 @@
+---
+source: src/main.rs
+expression: out
+---
+▶ NEXT STEP: spec_constitution
+No .specify/constitution.md found. This is a new project — call spec_constitution to establish the mobile architecture principles, 26 patterns, quality gates, and security non-negotiables before writing any spec.

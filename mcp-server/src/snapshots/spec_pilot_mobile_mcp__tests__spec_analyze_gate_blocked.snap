@@ -1,0 +1,7 @@
+---
+source: src/main.rs
+expression: out
+---
+❌ GATE BLOCKED — plan_content is empty or too short.
+Call spec_plan first to generate plan.md, data-model.md, contracts/navigation.md, contracts/api.md, and research.md.
+Pass the full content of plan.md as plan_content.

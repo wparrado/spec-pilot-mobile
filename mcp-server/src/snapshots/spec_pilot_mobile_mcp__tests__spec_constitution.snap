@@ -1,0 +1,122 @@
+---
+source: src/main.rs
+expression: out
+---
+# SDD Step 0 — Mobile Constitution
+
+## 1. Create `.specify/constitution.md`
+
+```md
+# Mobile Architecture Constitution: shopping-app
+
+Stack: Dart + Flutter | Platform: Cross-platform | Primary Entity: Order / Orders
+
+## Article I — Layer Rules (non-negotiable)
+- Presentation (Screens/Views) → ViewModel → Domain (Use Cases + Entities) → Data (Repository Adapters + Sources)
+- Dependencies point inward ONLY
+- Domain: zero external imports — no framework, no I/O, no DB
+- Use Cases: orchestrate domain logic, return Result<T,E>, one file per use case
+- Data layer: implements domain Repository Ports; contains Remote + Local data sources
+- Presentation: observes ViewModel state; delegates ALL user actions to ViewModel; zero business logic
+- Composition Root: main.* — the single place all layers are wired together
+
+## Article II — 26 Mandatory Mobile Patterns
+| # | Pattern | Layer |
+|---|---------|-------|
+| 1  | Entity | Domain |
+| 2  | Value Object | Domain |
+| 3  | Use Case / Interactor | Domain |
+| 4  | Repository Port | Domain |
+| 5  | Domain Event | Domain |
+| 6  | UI State (Loading/Success/Error/Empty) | Presentation |
+| 7  | ViewModel | Presentation |
+| 8  | Screen / View | Presentation |
+| 9  | Navigation (typed routes) | Presentation |
+| 10 | One-Shot Effect | Presentation |
+| 11 | Result / Railway | Shared |
+| 12 | App State Machine | Shared |
+| 13 | Error Mapping (domain → user message) | Presentation |
+| 14 | Remote Data Source | Data |
+| 15 | Local Data Source | Data |
+| 16 | Repository Adapter | Data |
+| 17 | Offline-First | Data |
+| 18 | Cache-Aside | Data + Infrastructure |
+| 19 | Auth Interceptor | Infrastructure |
+| 20 | Secure Storage | Infrastructure |
+| 21 | Feature Flag | Infrastructure |
+| 22 | Push Notifications | Infrastructure |
+| 23 | Biometric Auth | Infrastructure |
+| 24 | Deep Linking | Infrastructure |
+| 25 | Background Job | Infrastructure |
+| 26 | Crash & Observability | Infrastructure |
+
+## Article III — Quality Gates
+- Domain (Use Cases + Entities) test coverage ≥ 90%
+- ViewModel tests required (test state transitions, not UI)
+- Integration tests for data sources required
+- Overall coverage ≥ 80%
+- Zero linter violations
+- Zero secrets in code or config files
+
+## Article IV — Security Non-Negotiables (OWASP Mobile Top 10)
+- Secrets via environment variables or secure config only — never hardcoded
+- Sensitive data in Keychain (iOS) / Keystore (Android) — never plain SharedPreferences
+- Certificate pinning for all production API endpoints
+- Biometric auth follows platform guidelines — never store raw biometric data
+- No PII in logs, crash reports, or analytics events
+- Token refresh handled transparently by Auth Interceptor
+- Input validation at ViewModel and Domain layers
+
+## Article V — Observability
+- Crash reporting configured (Sentry / Firebase Crashlytics / equivalent)
+- Non-PII analytics events for key user journeys
+- Correlation ID per user session; included in every crash breadcrumb
+- App lifecycle events logged (foreground/background/terminate)
+
+## Article VI — Distribution
+- Signed builds for all environments (debug / staging / production)
+- App store compliance: privacy manifest (iOS 17+), permissions declarations
+- .env.example or equivalent config template
+- CI pipeline with automated tests before distribution
+- Principle of least privilege: request only the permissions actually needed
+```
+
+---
+
+## 2. Agent Enforcement Protocol
+
+Before writing ANY line of code, the agent MUST:
+1. Identify which layer the code belongs to (Domain / Data / Infrastructure / Presentation)
+2. Verify import rules: Domain imports nothing external; Use Cases import Domain only; Data layer implements Domain ports
+3. If there is any doubt about layer placement → STOP and consult plan.md before proceeding
+4. Domain logic must never depend on HTTP clients, databases, platform APIs, or UI frameworks
+5. All cross-layer communication goes through ports (interfaces), never direct calls
+
+Non-negotiable stops:
+- ❌ STOP if you are about to import a network/DB library inside a domain file
+- ❌ STOP if a Use Case returns a thrown exception instead of Result<T,E>
+- ❌ STOP if a ViewModel contains business logic that belongs in a Use Case
+- ❌ STOP if a Screen/View observes a repository directly (must go through ViewModel)
+- ❌ STOP if you skip writing tests for a layer before moving to the next
+
+---
+
+## 3. Create `.mcp.json` in the project root
+
+```json
+{
+  "mcpServers": {
+    "spec-pilot-mobile": {
+      "command": "/absolute/path/to/spec-pilot-mobile-mcp"
+    }
+  }
+}
+```
+
+Replace `/absolute/path/to/spec-pilot-mobile-mcp` with the actual path to the binary
+built from this repository (`mcp-server/target/release/spec-pilot-mobile-mcp`).
+
+---
+
+## Next Step
+Call `spec_feature` with a description of what you want to build.

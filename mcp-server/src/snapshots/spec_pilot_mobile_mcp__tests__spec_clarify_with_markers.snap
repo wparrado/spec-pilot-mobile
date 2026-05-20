@@ -1,0 +1,25 @@
+---
+source: src/main.rs
+expression: out
+---
+# SDD Step 2 — Clarify Ambiguities
+
+Spec length: 97 chars
+Marker count found: 2
+
+## Instructions
+1. Scan `spec.md` for all `[NEEDS CLARIFICATION: ...]` markers.
+2. Extract each marker and present it as a numbered question:
+   - Q1: <question text>?
+   - Q2: <question text>?
+3. Present ALL questions to the user at once and wait for the full set of answers.
+4. Update `spec.md` by replacing every marker with the actual answer.
+5. Verify zero markers remain.
+6. When zero markers remain, call `spec_plan`.
+
+## Working Preview
+Story 1 [NEEDS CLARIFICATION: who is the user?]
+Story 2 [NEEDS CLARIFICATION: what is the limit?]
+
+## Gate
+Do NOT plan until every clarification marker has been resolved.

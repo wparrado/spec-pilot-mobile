@@ -1,0 +1,52 @@
+---
+source: src/main.rs
+expression: out
+---
+# SDD Step 4 — Analyze Cross-Artifact Consistency
+
+Review your spec and your plan using the checklist below.
+Spec excerpt:
+> some spec content
+
+Plan excerpt:
+> plan.md content — patterns selected, layers mapped, user stories covered. plan.md content — patterns selected, layers mapped, user stories covered. plan.md content — patterns selected, layers mapped, user stories covered. plan.md content — patterns selected, layers mapped, user stories covered.
+
+## Consistency Checks
+- [ ] Every User Story in spec.md has a corresponding section in plan.md
+- [ ] Every Acceptance Criteria has a testable implementation path in plan.md
+- [ ] All [NEEDS CLARIFICATION] markers are resolved (zero remaining)
+- [ ] plan.md references at least: #1 (Entity), #3 (Use Case), #4 (Repository Port), #6 (UI State), #7 (ViewModel), #9 (Navigation), #11 (Result/Railway), #16 (Repository Adapter)
+- [ ] contracts/navigation.md covers all screens implied by the user stories
+- [ ] data-model.md covers all entities and local storage implied by the spec
+
+## Architecture Gates
+- [ ] Domain layer has zero external dependencies planned
+- [ ] Use Cases only use domain entities and repository ports
+- [ ] Data layer only implements domain ports (no UI/ViewModel references)
+- [ ] Composition Root is planned in main.*
+
+## Mobile-Specific Pattern Coverage
+- [ ] If spec mentions "offline" or "no network" → plan includes Offline-First (#17) and Local Data Source (#15)
+- [ ] If spec mentions "auth" or "login" → plan includes Auth Interceptor (#19) and Secure Storage (#20)
+- [ ] If spec mentions "push" or "notification" → plan includes Push Notifications (#22)
+- [ ] If spec mentions "deep link" or "share" → plan includes Deep Linking (#24)
+- [ ] If spec mentions "background sync" → plan includes Background Job (#25)
+- [ ] If spec mentions "biometric" → plan includes Biometric Auth (#23)
+- [ ] If spec mentions "experiment" or "flag" → plan includes Feature Flag (#21)
+
+## Output format
+```md
+## Analysis Report
+
+### ✅ Passed Checks
+- [list]
+
+### ❌ Critical Inconsistencies (MUST fix before spec_tasks)
+- CI-01: [description]
+
+### ⚠️ Warnings (should fix before implementing)
+- W-01: [description]
+
+### Gate Result
+[PASS: Call spec_tasks] OR [FAIL: Fix CI-XX items first, then re-run spec_analyze]
+```

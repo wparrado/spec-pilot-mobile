@@ -1,0 +1,63 @@
+---
+source: src/main.rs
+expression: out
+---
+# SDD Step 1 — Specify Feature
+
+Create `specs/NNN-<feature-slug>/spec.md` for this request:
+> Allow users to view and place orders
+
+Project: shopping-app
+Stack: Dart / Flutter | Platform: Cross-platform
+
+## Instructions
+1. Derive a feature slug from the description using kebab-case.
+2. Scan `specs/` to find the next feature number.
+3. Create `specs/NNN-<feature-slug>/` and any needed subdirectories.
+4. Save the following template as `spec.md`.
+
+```md
+# Feature Spec: <feature title>
+- Project: shopping-app
+- Stack: Dart / Flutter (Cross-platform)
+- Feature Number: NNN
+- Branch: NNN-<feature-slug>
+- Status: DRAFT
+
+## §1 Problem Statement
+Derive the problem statement from the user description. State the user pain, business need, and desired outcome.
+
+## §2 User Stories
+- As a <role>, I want <action>, so that <benefit>
+- Derive all stories from the description.
+- If any role, action, constraint, or expected outcome is ambiguous, mark it inline with:
+  [NEEDS CLARIFICATION: <specific question>]
+
+## §3 Acceptance Criteria
+For each user story, write Given / When / Then criteria.
+Every unknown must be marked with [NEEDS CLARIFICATION: <specific question>].
+
+## §4 Non-Functional Requirements
+| Category | Requirement |
+|----------|-------------|
+| Performance | [NEEDS CLARIFICATION: What response time or interaction latency is acceptable?] |
+| Offline | [NEEDS CLARIFICATION: Must this feature work without network connectivity?] |
+| Platform | [NEEDS CLARIFICATION: Are there iOS-specific or Android-specific behaviors?] |
+| Data retention | [NEEDS CLARIFICATION: How long must local data be retained?] |
+
+## §5 Out of Scope
+List explicitly what is NOT included in this feature.
+
+## §6 Open Questions
+List every [NEEDS CLARIFICATION] marker collected from the sections above.
+```
+
+## Critical Rules
+- ✅ Focus on WHAT and WHY
+- ❌ Never mention widgets, components, HTTP endpoints, databases, or frameworks in the spec body
+- ✅ Mark every ambiguity with `[NEEDS CLARIFICATION: <specific question>]`
+
+## Gate
+Count all `[NEEDS CLARIFICATION]` markers.
+- If count > 0 → call `spec_clarify`
+- If count = 0 → call `spec_plan`

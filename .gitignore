@@ -1,0 +1,6 @@
+# Rust build artifacts
+mcp-server/target/
+
+# macOS
+.DS_Store
+**/.DS_Store

@@ -1,0 +1,75 @@
+---
+source: src/main.rs
+expression: out
+---
+# Phase 1: Domain — shopping-app (Dart/Flutter, Cross-platform)
+
+Relevant tasks from tasks.md:
+> task list
+
+Plan reference:
+> plan.md content — patterns selected, layers mapped, user stories covered. plan.md content — patterns selected, layers mapped, user stories covered. plan.md content — patterns selected, layers mapped, user stories covered. plan.md content — patterns selected, layers mapped, user stories covered.
+
+## Implement now
+- Create shared base types: Entity, ValueObject, Result<T,E>, DomainError.
+- Create `Order` Value Objects with `create() → Result` validation.
+- Create the `Order` entity/aggregate with business invariants.
+- Create Domain Events for each state change.
+- Define the `OrderRepository` port interface.
+- Create Use Cases (one file each): CreateOrderUseCase, GetOrderUseCase, UpdateOrderUseCase, DeleteOrderUseCase.
+- Write domain unit tests before touching any other layer.
+
+## Pseudocode
+```text
+Entity
+  id, created_at, updated_at
+  equals(other) → id equality
+
+ValueObject<T>
+  immutable; private constructor
+  create(raw) → Result<VO, DomainError>   // validates, then constructs
+  equals(other) → value equality
+
+Result<T, E>
+  Success(value: T)
+  Failure(error: E)
+  map / flat_map / map_error
+
+OrderId.create(raw) → Result<OrderId, DomainError>
+
+Order
+  fields: OrderId, ...value objects
+  create(params) → validate invariants → Success(Order) | Failure(DomainError)
+  behavior methods → return Result<T, DomainError>
+
+Domain Events
+  OrderCreated(id, ...fields, occurred_at)
+  OrderUpdated(id, ...changed_fields, occurred_at)
+
+OrderRepository (port — interface only, no implementation)
+  find_by_id(id) → Result<Order, DomainError>
+  find_all(filters) → Result<List<Order>, DomainError>
+  save(entity) → Result<void, DomainError>
+  delete(id) → Result<void, DomainError>
+
+CreateOrderUseCase
+  execute(params) → Result<OrderId, DomainError>
+    validate = Order.create(params)
+    if failure → return failure
+    save via repository
+    return Success(entity.id)
+
+GetOrderUseCase
+  execute(id) → Result<Order, DomainError>
+    return repository.find_by_id(id)
+```
+
+## Tests required now
+- `Order.create()` success + every invariant failure
+- Each Value Object: valid construction + each invalid path
+- Use Case happy path + failure propagation
+- Domain Event fields are set correctly
+
+✋ STOP — run all tests for this phase. All must pass before calling scaffold_phase with phase=2.
+
+<!-- SCAFFOLD-PHASE-1-COMPLETE -->
